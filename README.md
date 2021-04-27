@@ -2,6 +2,11 @@
 
 ## Project: Parallel image segmentation using k-means algorithm
 
+Final project of Subject Parallel Computing Application.
+
+Ho Chi Minh University Of Science.
+
+Faculty of Information Technology.
 # 
 
 ## Table of Contents
@@ -29,4 +34,4 @@ K-Means clustering algorithm is an unsupervised algorithm and it is used to segm
 ![alt text](https://miro.medium.com/max/499/1*A2AkQDwetLMPcut4-J3GLA.png)
 ### References
 
-[1]. https://medium.com/swlh/image-segmentation-using-k-means-clustering-46a60488ae71
+[1]. <https://medium.com/swlh/image-segmentation-using-k-means-clustering-46a60488ae71>
