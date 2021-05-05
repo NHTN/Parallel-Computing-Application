@@ -85,7 +85,9 @@ Faculty of Information Technology.
     <td>06/05/2021</td>
     <td>
     - Thay đổi đề tài cài đặt áp dụng trên video
+   <br>
     - Tìm hiểu phương pháp áp dụng K-means trên video
+   <br>
     - Tìm hiểu các phương pháp tối ưu K-means đối với bài toán phân đoạn
    </td>
     <td>Cả nhóm</td>
@@ -105,6 +107,7 @@ Faculty of Information Technology.
     <td>10/05/2021</td>
     <td>
     - Cài đặt thuật toán tuần tự đối với ảnh
+    <br> 
     - Cài đặt thuật toán tuần tự đối với video
    </td>
     <td>Cả nhóm</td>
