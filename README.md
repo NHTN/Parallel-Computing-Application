@@ -21,7 +21,7 @@ Faculty of Information Technology.
 | --- | ------- | ---------------------- | ---------------------------------------- |
 | 1   | 1712117 | Nguyễn Huỳnh Thảo Nhi  | <https://github.com/NHTN>                |
 | 2   | 1712713 | Lê Bá Quyền            | <https://github.com/LBQuyen>             |
-| 3   | 1712175 | Nguyễn Lê Trường Thành | <https://github.com/noname-icecream0066> |
+| 3   | 1712775 | Nguyễn Lê Trường Thành | <https://github.com/noname-icecream0066> |
 
 #
 ### Bảng kế hoạch
@@ -107,7 +107,7 @@ Faculty of Information Technology.
     <td>10/05/2021</td>
     <td>
     - Cài đặt thuật toán tuần tự đối với ảnh
-    <br> 
+    </br>
     - Cài đặt thuật toán tuần tự đối với video
    </td>
     <td>Cả nhóm</td>
@@ -126,7 +126,7 @@ Faculty of Information Technology.
     <td>12/05/2021</td>
     <td>12/05/2021</td>
     <td>
-    - Merge code tuần tự
+    - Merge code tuần tự</br>
     - Bổ sung file Notebook
    </td>
     <td>Nguyễn Huỳnh Thảo Nhi</td>
