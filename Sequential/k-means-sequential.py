@@ -24,7 +24,7 @@ def initialize_centroids(input_pixels, k = 2):
       input_pixels (int[[]]): The array of pixels of image.
       k (int): Integer value of k clusters.
 
-    Output:
+    Returns:
       int[]: The vector clusters is initialized.
   '''
   (width_image, height_image) = input_pixels.shape
@@ -50,9 +50,26 @@ def initialize_centroids(input_pixels, k = 2):
 
   return centroids
 
+def euclidean_distance(value_1, value_2):
+  '''
+    Calculate distance between value of 2 values by Euclidean formula.
+
+    Args:
+      value_1 (): The first value
+      value_2 (): The second value
+    
+    Returns:
+      (float): The value of distance between 2 values
+  '''
+
+  distance = np.linalg.norm(value_1 - value_2)
+  return distance
+
 def main():
   img = read_image('input.jpg', 1)
   clusters = initialize_centroids(img, 3)
   print(clusters)
+
+  print(euclidean_distance(img[0][0], img[100][1]))
 
 main()
