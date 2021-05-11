@@ -1,6 +1,7 @@
 import cv2
 import time
 from random import *
+import numpy as np
 
 def read_image(image_file, image_type):
   '''
@@ -52,7 +53,7 @@ def initialize_centroids(input_pixels, k = 2):
 
 def euclidean_distance(value_1, value_2):
   '''
-    Calculate distance between value of 2 values by Euclidean formula.
+    Calculate distance between 2 values by Euclidean formula.
 
     Args:
       value_1 (): The first value
@@ -65,11 +66,52 @@ def euclidean_distance(value_1, value_2):
   distance = np.linalg.norm(value_1 - value_2)
   return distance
 
+def get_value(a, b):
+    '''
+      Calculate absolute distance between 2 integers
+
+    Args:
+      a (int[]): The first integer
+      b (int): The second integer
+    
+    Returns:
+      (int): The  absolute distance between 2 integers
+  '''
+  return abs(int(a)-int(b))
+
+def get_best_centroid(centroids, pixel):
+  '''
+    Get the best centrer index which have the min distance to pixel
+
+    Args:
+      centroids (int[]): The centroids array
+      pixel (int): The pixel of image
+    
+    Returns:
+      (int): The index of the best center
+  '''
+  best_center_value = get_value(centroids[0], pixel)
+
+  best_center_index = 0
+
+  for i in range(1, len(centroids)):
+    current_value = get_value(centroids[i], pixel)
+
+    if (current_value < best_center_value):
+      best_center_value = current_value
+      best_center_index = i 
+    else:
+      continue
+
+  return best_center_index
+
 def main():
   img = read_image('input.jpg', 1)
   clusters = initialize_centroids(img, 3)
   print(clusters)
 
   print(euclidean_distance(img[0][0], img[100][1]))
+
+  print(get_best_centroid(clusters, img[0][0]))
 
 main()
