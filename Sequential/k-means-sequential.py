@@ -105,6 +105,39 @@ def get_best_centroid(centroids, pixel):
 
   return best_center_index
 
+def recompute_centroids(centroid_map, input_pixels, k, centroids):
+  '''
+    Calculate average value of centroids
+
+    Args:
+      centroid_map (int[][]): The centroids array
+      input_pixels (int[]): The pixels array of image
+      k (int): The pixel of image
+      centroids (int[])[]: The centroids array
+
+    Returns:
+      (int): The centroids array after recalculte value
+  '''
+  num_pixels_in_centroids = 0
+  sum_pixels = 0
+
+  (width, height) = input_pixels.shape
+
+  for i in range(0, k):
+    for row in range(0, height):
+      for col in range(0, width):
+        if (centroid_map[row][col] == centroids[i]):
+          sum_pixels += input_pixels[row][col]
+          num_pixels_in_centroids = num_pixels_in_centroids + 1
+        else:
+          continue
+
+    if (sum_pixels == 0):
+      centroids[i] = 0
+    else:
+      centroids[i] = round(sum_pixels / num_pixels_in_centroids)
+  return centroids
+
 def main():
   img = read_image('input.jpg', 1)
   clusters = initialize_centroids(img, 3)
