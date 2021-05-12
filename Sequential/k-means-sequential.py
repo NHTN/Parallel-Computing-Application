@@ -2,6 +2,7 @@ import cv2
 import time
 from random import *
 import numpy as np
+from numba import jit
 
 def read_image(image_file, image_type):
   '''
@@ -17,6 +18,7 @@ def read_image(image_file, image_type):
   pixels_array = cv2.imread('input.jpg', 0)
   return pixels_array
 
+@jit(nopython=True)
 def initialize_centroids(input_pixels, k = 2):
   '''
     Random initialize for k clusters
@@ -51,6 +53,7 @@ def initialize_centroids(input_pixels, k = 2):
 
   return centroids
 
+@jit(nopython=True)
 def euclidean_distance(value_1, value_2):
   '''
     Calculate distance between 2 values by Euclidean formula.
@@ -66,19 +69,23 @@ def euclidean_distance(value_1, value_2):
   distance = np.linalg.norm(value_1 - value_2)
   return distance
 
+@jit(nopython=True)
 def get_value(a, b):
-    '''
+  '''
       Calculate absolute distance between 2 integers
 
     Args:
-      a (int[]): The first integer
+      a (int): The first integer
       b (int): The second integer
     
     Returns:
       (int): The  absolute distance between 2 integers
   '''
-  return abs(int(a)-int(b))
+  value = int(int(a) - int(b))
+  result = abs(value)
+  return result
 
+@jit(nopython=True)
 def get_best_centroid(centroids, pixel):
   '''
     Get the best centrer index which have the min distance to pixel
@@ -105,6 +112,7 @@ def get_best_centroid(centroids, pixel):
 
   return best_center_index
 
+@jit(nopython=True)
 def recompute_centroids(centroid_map, input_pixels, k, centroids):
   '''
     Calculate average value of centroids
@@ -145,6 +153,19 @@ def main():
 
   print(euclidean_distance(img[0][0], img[100][1]))
 
-  print(get_best_centroid(clusters, img[0][0]))
+  #print(get_best_centroid(clusters, img[0][0]))
 
-main()
+img = read_image('input.jpg', 1)
+clusters = initialize_centroids(img, 3)
+import time
+  # DO NOT REPORT THIS... COMPILATION TIME IS INCLUDED IN THE EXECUTION TIME!
+start = time.time()
+get_best_centroid(clusters, img[0][0])
+end = time.time()
+print("Elapsed (with compilation) = %s" % (end - start))
+
+# NOW THE FUNCTION IS COMPILED, RE-TIME IT EXECUTING FROM CACHE
+start = time.time()
+get_best_centroid(clusters, img[0][0])
+end = time.time()
+print("Elapsed (after compilation) = %s" % (end - start))
