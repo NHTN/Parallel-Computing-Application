@@ -189,11 +189,12 @@ def main():
         count = 1
         images = glob.glob("*.jpg")
         for i in images:
-            print("Coverting {}/{}".format(count, len(images)))
-            img = cv2.imread(i)
-            out_img = SegmentationImage(img, k)
-            cv2.imwrite(i.replace('frame',args.fileout), out_img)
-            count = count + 1
+            if("frame" in i):
+                print("Coverting {}/{}".format(count, len(images)))
+                img = cv2.imread(i)
+                out_img = SegmentationImage(img, k)
+                cv2.imwrite(i.replace('frame',args.fileout), out_img)
+                count = count + 1
 
         print("--- Done in %s seconds ---" % (time.time() - start_time))
         
