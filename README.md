@@ -80,7 +80,7 @@ Faculty of Information Technology.
     <td></td>
    </tr>
    <tr>
-   <td rowspan="5">4</td>
+   <td rowspan="4">4</td>
     <td >30/04/2021</td>
     <td>06/05/2021</td>
     <td>
@@ -117,20 +117,11 @@ Faculty of Information Technology.
     <td>11/05/2021</td>
     <td>11/05/2021</td>
     <td>
-    - Thảo luận, lựa chọn phiên bản tuần tự thích hợp
+    - Thảo luận, tổng hợp tìm hiểu và cách cài đặt code
    </td>
     <td>Cả nhóm</td>
   </tr>
 
-   <tr>
-    <td>12/05/2021</td>
-    <td>12/05/2021</td>
-    <td>
-    - Merge code tuần tự</br>
-    - Bổ sung file Notebook
-   </td>
-    <td>Nguyễn Huỳnh Thảo Nhi</td>
-  </tr>
 
    <tr>
    <td>5</td>
