@@ -115,7 +115,7 @@ Faculty of Information Technology.
 
   <tr>
     <td>11/05/2021</td>
-    <td>11/05/2021</td>
+    <td>12/05/2021</td>
     <td>
     - Thảo luận, tổng hợp tìm hiểu và cách cài đặt code
    </td>
