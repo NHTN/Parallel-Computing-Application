@@ -38,7 +38,19 @@ def initialize_centroids(input_pixels, k, height, width):
 def Mat_3D(k, height, width):
     return [[[1 for x in range(k)] for y in range(height)] for z in range(width)]
 
-def choose_centroid(row, col, image, centroids):
+def choose_centroid(image, row, col, centroids):
+    '''
+    Choose the index of pixel which have the minimum distance with centroids 
+
+    Args:
+      input_pixels (int[[]]): The array of pixels of image.
+      k (int): Integer value of k clusters.
+      height (int): Height of input image.
+      width (int): Width of input image.
+
+    Returns:
+      int[[][][]]: The vector clusters is initialized.
+    '''
     pixel = image[row][col]
     index = 0
     min_distance = 100*len(centroids)
