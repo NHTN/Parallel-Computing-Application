@@ -92,12 +92,11 @@ def rechoose_centroid(index_map, image, k, height, width):
     return Centroids_R,Centroids_G, Centroids_B
 
 @jit
-def SegmentationImage(image, k):
-
+def segmentation_image(image, k):
     height, width, channels = img.shape
     
     # Choose ramdom centroids
-    Centroids_R, Centroids_G, Centroids_B = initialize_centroids(k, image, width, height)
+    Centroids_R, Centroids_G, Centroids_B = initialize_centroids(image, k, width, height)
     
     #First Centroids
     Centroids = [[1, 2, 3]] * k
@@ -160,7 +159,7 @@ def main():
                 print('--- Calculating SSE with k = {} ----'.format(i+1)) 
                 SSE[i] = 0
                 img = cv2.imread(args.filename)
-                out_img = SegmentationImage(img,i + 1)
+                out_img = segmentation_image(img,i + 1)
                 img = cv2.imread(args.filename)
 
                 for x in range(len(img)):
@@ -177,7 +176,7 @@ def main():
                 print('--- Calculating SSE with k = {} ----'.format(i+1)) 
                 SSE[i] = 0
                 img = cv2.imread('frame0.jpg')
-                out_img = SegmentationImage(img,i + 1)
+                out_img = segmentation_image(img,i + 1)
                 img = cv2.imread('frame0.jpg')
                 
                 for x in range(len(img)):
@@ -198,7 +197,7 @@ def main():
         print("--- Coverting the image ---")
         start_time = time.time()
         img = cv2.imread(args.filename)
-        out_img = SegmentationImage(img, k)
+        out_img = segmentation_image(img, k)
         cv2.imwrite(args.fileout, out_img)
 
         print("--- %s seconds ---" % (time.time() - start_time))
@@ -213,7 +212,7 @@ def main():
             if("frame" in i):
                 print("Coverting {}/{}".format(count, len(images)))
                 img = cv2.imread(i)
-                out_img = SegmentationImage(img, k)
+                out_img = segmentation_image(img, k)
                 cv2.imwrite(i.replace('frame',args.fileout), out_img)
                 count = count + 1
 
