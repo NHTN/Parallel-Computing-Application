@@ -63,6 +63,19 @@ def choose_centroid(image, row, col, centroids):
     return index
 
 def rechoose_centroid(index_map, image, k, height, width):
+    '''
+    Re choose the centroids which suitable
+
+    Args:
+      index_map (int[[]]): The array of pixels of image.
+      image (int[][]): Input array 
+      k (int): Integer value of k clusters.
+      height (int): Height of input image.
+      width (int): Width of input image.
+
+    Returns:
+      int[[][][]]: The vector of centroids.
+    '''
     Centroids_R,Centroids_G, Centroids_B = [0] * k, [0] * k, [0] * k
     n_Centroids_R, n_Centroids_G, n_Centroids_B = [0] * k, [0] * k, [0] * k
     
