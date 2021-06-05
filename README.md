@@ -182,5 +182,65 @@ Faculty of Information Technology.
     <td>Báo cáo tiến độ lần 03</td>
     <td>Lê Bá Quyền</td>
   </tr>
+
+  <tr>
+   <td rowspan="5">8</td>
+    <td>28/05/2021</td>
+    <td>31/05/2021</td>
+    <td>
+    - Cập nhật numba trên thuật toán tuần tự
+   <br>
+    - Tìm hiểu phương pháp áp dụng K-means trên video
+   </td>
+    <td>Cả nhóm</td>
+  </tr>
+
+
+  <tr>
+    <td>01/06/2021</td>
+    <td>01/06/2021</td>
+    <td>
+    - Bổ sung, chỉnh sửa và hoàn thiện file README, Notebook
+   </td>
+    <td>Nguyễn Huỳnh Thảo Nhi</td>
+  </tr>
+
+  <tr>
+    <td>01/06/2021</td>
+    <td>05/06/2021</td>
+    <td>
+    - Cập nhật hàm đánh giá thuật toán bằng thư viện Sklearn
+   </td>
+    <td>Nguyễn Huỳnh Thảo Nhi</td>
+  </tr>
+
+  <tr>
+    <td>01/06/2021</td>
+    <td>08/06/2021</td>
+    <td>
+    - Cải thiện thuật toán tuần tự
+    <br>
+    - Tối ưu code
+   </td>
+    <td>Cả nhóm</td>
+  </tr>
+
+  <tr>
+    <td>09/06/2021</td>
+    <td>09/06/2021</td>
+    <td>
+    - Thảo luận, tổng hợp code và merge code
+   </td>
+    <td>Cả nhóm</td>
+  </tr>
+
+
+  <tr>
+   <td>9</td>
+    <td>10/06/2021</td>
+    <td>10/06/2021</td>
+    <td>Báo cáo tiến độ lần 04</td>
+    <td>Nguyễn Huỳnh Thảo Nhi</td>
+  </tr>
 </tbody>
 </table>
