@@ -106,6 +106,16 @@ def rechoose_centroid(index_map, image, k, height, width):
 
 @jit
 def segmentation_image(image, k):
+    '''
+        Partitioned image into various subgroups (of pixels) 
+
+        Args:
+        image (int[][]): Input array 
+        k (int): Integer value of k clusters
+
+        Returns:
+        Export output to image or video
+    '''
     height, width, channels = img.shape
     
     # Choose ramdom centroids
