@@ -8,11 +8,12 @@ from numba import jit
 import time
 import warnings
 warnings.filterwarnings('ignore')
+import matplotlib.pyplot as plt
 from argparse import ArgumentParser
 parser = ArgumentParser()
 
-@jit
-def initialize_centroids(input_pixels, k, height, width):
+@jit(nopython=True)
+def Random_Centroids(k, image, height, width):
     '''
     Random initialize for k clusters
 
@@ -25,20 +26,20 @@ def initialize_centroids(input_pixels, k, height, width):
     Returns:
       int[[][][]]: The vector clusters is initialized.
     '''
-    centroids_R, centroids_G,  centroids_B = [1] * k, [1] * k, [1] * k
+    Centroids_R,Centroids_G, Centroids_B = [1] * k, [1] * k, [1] * k
     
     for i in range(k):
-        random_pixel = input_pixels[randint(0, width)][randint(0, height)]
-        centroids_R[i] = random_pixel[0]
-        centroids_G[i] = random_pixel[1]
-        centroids_B[i] = random_pixel[2]
+        Centroids_R[i] = image[randrange(width)][randrange(height)][0]
+        Centroids_G[i] = image[randrange(width)][randrange(height)][1]
+        Centroids_B[i] = image[randrange(width)][randrange(height)][2]
     
-    return centroids_R, centroids_G, centroids_B
+    return Centroids_R, Centroids_G, Centroids_B
 
+@jit(nopython=True)
 def Mat_3D(k, height, width):
     return [[[1 for x in range(k)] for y in range(height)] for z in range(width)]
 
-def choose_centroid(image, row, col, centroids):
+def Choose_Centroid(row, col, image, Centroids):
     '''
     Choose the index of pixel which have the minimum distance with centroids 
 
@@ -53,16 +54,16 @@ def choose_centroid(image, row, col, centroids):
     '''
     pixel = image[row][col]
     index = 0
-    min_distance = 100*len(centroids)
+    temp = 100*len(Centroids)
     
-    for i in range(len(centroids)):
-        distance = (math.sqrt((math.pow(int(centroids[i][0])-int(pixel[0]),2))+(math.pow(int(centroids[i][1])-int(pixel[1]),2))+(math.pow(int(centroids[i][2])-int(pixel[2]),2))))
-        if (distance < min_distance):
-            min_distance = distance
+    for i in range(len(Centroids)):
+        distance = (math.sqrt((math.pow(int(Centroids[i][0])-int(pixel[0]),2))+(math.pow(int(Centroids[i][1])-int(pixel[1]),2))+(math.pow(int(Centroids[i][2])-int(pixel[2]),2))))
+        if (distance < temp):
+            temp = distance
             index = i
     return index
 
-def rechoose_centroid(index_map, image, k, height, width):
+def ReChoose_Centroid(index_map, image, k, centroids, height, width):
     '''
     Re choose the centroids which suitable
 
@@ -105,9 +106,9 @@ def rechoose_centroid(index_map, image, k, height, width):
     return Centroids_R,Centroids_G, Centroids_B
 
 @jit
-def segmentation_image(image, k):
+def SegmentationImage(image, k):
     '''
-        Partitioned image into various subgroups (of pixels) 
+    Partitioned image into various subgroups (of pixels) 
 
         Args:
         image (int[][]): Input array 
@@ -119,7 +120,7 @@ def segmentation_image(image, k):
     height, width, channels = img.shape
     
     # Choose ramdom centroids
-    Centroids_R, Centroids_G, Centroids_B = initialize_centroids(image, k, width, height)
+    Centroids_R, Centroids_G, Centroids_B = Random_Centroids(k, image, width, height)
     
     #First Centroids
     Centroids = [[1, 2, 3]] * k
@@ -132,14 +133,14 @@ def segmentation_image(image, k):
     Index_Map = Mat_3D(k, width, height)
     
     #KMeans
-    for i in range(10):
+    for i in range(5):
         for row in range(height):
             for col in range(width):
-                Index_Map[row][col] = choose_centroid(row, col, image, Centroids)
+                Index_Map[row][col] = Choose_Centroid(row, col, image, Centroids)
                 Map_Centroids[row][col] = Centroids[Index_Map[row][col]]
             
         #Rechoose Centroids
-        Centroids_R,Centroids_G, Centroids_B  = rechoose_centroid(Index_Map, image, k, height, width)
+        Centroids_R,Centroids_G, Centroids_B  = ReChoose_Centroid(Index_Map, image, k, Centroids, height, width)
         
         for i in range(k):
             Centroids[i] = [Centroids_R[i], Centroids_G[i], Centroids_B[i]]
@@ -182,7 +183,7 @@ def main():
                 print('--- Calculating SSE with k = {} ----'.format(i+1)) 
                 SSE[i] = 0
                 img = cv2.imread(args.filename)
-                out_img = segmentation_image(img,i + 1)
+                out_img = SegmentationImage(img,i + 1)
                 img = cv2.imread(args.filename)
 
                 for x in range(len(img)):
@@ -199,7 +200,7 @@ def main():
                 print('--- Calculating SSE with k = {} ----'.format(i+1)) 
                 SSE[i] = 0
                 img = cv2.imread('frame0.jpg')
-                out_img = segmentation_image(img,i + 1)
+                out_img = SegmentationImage(img,i + 1)
                 img = cv2.imread('frame0.jpg')
                 
                 for x in range(len(img)):
@@ -220,7 +221,7 @@ def main():
         print("--- Coverting the image ---")
         start_time = time.time()
         img = cv2.imread(args.filename)
-        out_img = segmentation_image(img, k)
+        out_img = SegmentationImage(img, k)
         cv2.imwrite(args.fileout, out_img)
 
         print("--- %s seconds ---" % (time.time() - start_time))
@@ -235,7 +236,7 @@ def main():
             if("frame" in i):
                 print("Coverting {}/{}".format(count, len(images)))
                 img = cv2.imread(i)
-                out_img = segmentation_image(img, k)
+                out_img = SegmentationImage(img, k)
                 cv2.imwrite(i.replace('frame',args.fileout), out_img)
                 count = count + 1
 
