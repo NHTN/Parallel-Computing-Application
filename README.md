@@ -184,13 +184,15 @@ Faculty of Information Technology.
   </tr>
 
   <tr>
-   <td rowspan="5">8</td>
+   <td rowspan="4">8</td>
     <td>28/05/2021</td>
     <td>31/05/2021</td>
     <td>
     - Cập nhật numba trên thuật toán tuần tự
    <br>
     - Tìm hiểu phương pháp áp dụng K-means trên video
+   <br>
+    - Cập nhật hàm đánh giá thuật toán bằng thư viện Sklearn
    </td>
     <td>Cả nhóm</td>
   </tr>
@@ -201,15 +203,6 @@ Faculty of Information Technology.
     <td>01/06/2021</td>
     <td>
     - Bổ sung, chỉnh sửa và hoàn thiện file README, Notebook
-   </td>
-    <td>Nguyễn Huỳnh Thảo Nhi</td>
-  </tr>
-
-  <tr>
-    <td>01/06/2021</td>
-    <td>05/06/2021</td>
-    <td>
-    - Cập nhật hàm đánh giá thuật toán bằng thư viện Sklearn
    </td>
     <td>Nguyễn Huỳnh Thảo Nhi</td>
   </tr>
