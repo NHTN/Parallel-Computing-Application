@@ -4,11 +4,12 @@ from random import *
 import numpy as np
 import math
 import glob
-from numba import jit
+from numba import jit, prange
 import time
 import warnings
 warnings.filterwarnings('ignore')
 import matplotlib.pyplot as plt
+from numba.typed import List
 from argparse import ArgumentParser
 parser = ArgumentParser()
 
@@ -26,7 +27,7 @@ def Random_Centroids(k, image, height, width):
     Returns:
       int[[][][]]: The vector clusters is initialized.
     '''
-    Centroids_R,Centroids_G, Centroids_B = [1] * k, [1] * k, [1] * k
+    Centroids_R,Centroids_G, Centroids_B = np.array([1] * k), np.array([1] * k), np.array([1] * k)
     
     for i in range(k):
         Centroids_R[i] = image[randrange(width)][randrange(height)][0]
@@ -37,9 +38,10 @@ def Random_Centroids(k, image, height, width):
 
 @jit(nopython=True)
 def Mat_3D(k, height, width):
-    return [[[1 for x in range(k)] for y in range(height)] for z in range(width)]
+    return np.zeros((width, height, k), np.int64)
 
-def Choose_Centroid(row, col, image, Centroids):
+@jit(nopython=True)
+def Choose_Centroid(Index_Map, Map_Centroids, image, Centroids):
     '''
     Choose the index of pixel which have the minimum distance with centroids 
 
@@ -52,18 +54,25 @@ def Choose_Centroid(row, col, image, Centroids):
     Returns:
       int[[][][]]: The vector clusters is initialized.
     '''
-    pixel = image[row][col]
-    index = 0
-    temp = 100*len(Centroids)
-    
-    for i in range(len(Centroids)):
-        distance = (math.sqrt((math.pow(int(Centroids[i][0])-int(pixel[0]),2))+(math.pow(int(Centroids[i][1])-int(pixel[1]),2))+(math.pow(int(Centroids[i][2])-int(pixel[2]),2))))
-        if (distance < temp):
-            temp = distance
-            index = i
-    return index
+    for row in range(image.shape[0]):
+        for col in range(image.shape[1]):
+            pixel = image[row][col]
+            index = 0
+            temp = 100*len(Centroids)
 
-def ReChoose_Centroid(index_map, image, k, centroids, height, width):
+            for i in range(len(Centroids)):
+                distance = (math.sqrt((math.pow(int(Centroids[i][0])-int(pixel[0]),2))+(math.pow(int(Centroids[i][1])-int(pixel[1]),2))+(math.pow(int(Centroids[i][2])-int(pixel[2]),2))))
+                if (distance < temp):
+                    temp = distance
+                    index = i
+        
+            Index_Map[row][col][0] = index
+            Map_Centroids[row][col][0] = Centroids[index][0]
+            Map_Centroids[row][col][1] = Centroids[index][1]
+            Map_Centroids[row][col][2] = Centroids[index][2]
+
+@jit(nopython=True)
+def ReChoose_Centroid(index_map, image, k, centroids):
     '''
     Re choose the centroids which suitable
 
@@ -77,18 +86,19 @@ def ReChoose_Centroid(index_map, image, k, centroids, height, width):
     Returns:
       int[[][][]]: The vector of centroids.
     '''
-    Centroids_R,Centroids_G, Centroids_B = [0] * k, [0] * k, [0] * k
-    n_Centroids_R, n_Centroids_G, n_Centroids_B = [0] * k, [0] * k, [0] * k
+
+    Centroids_R,Centroids_G, Centroids_B = np.array([1] * k), np.array([1] * k), np.array([1] * k)
+    n_Centroids_R, n_Centroids_G, n_Centroids_B = np.array([1] * k), np.array([1] * k), np.array([1] * k)
     
-    for row in range(height):
-        for col in range(width):
+    for row in range(image.shape[0]):
+        for col in range(image.shape[1]):
+            
             Centroids_R[index_map[row][col]] = Centroids_R[index_map[row][col]] + image[row][col][0]
-            n_Centroids_R[index_map[row][col]] =  n_Centroids_R[index_map[row][col]] + 1
-
             Centroids_G[index_map[row][col]] = Centroids_G[index_map[row][col]] + image[row][col][1]
-            n_Centroids_G[index_map[row][col]] =  n_Centroids_G[index_map[row][col]] + 1
-
             Centroids_B[index_map[row][col]] = Centroids_B[index_map[row][col]] + image[row][col][2]
+            
+            n_Centroids_R[index_map[row][col]] =  n_Centroids_R[index_map[row][col]] + 1
+            n_Centroids_G[index_map[row][col]] =  n_Centroids_G[index_map[row][col]] + 1
             n_Centroids_B[index_map[row][col]] =  n_Centroids_B[index_map[row][col]] + 1
     
     for i in range(k):
@@ -99,13 +109,13 @@ def ReChoose_Centroid(index_map, image, k, centroids, height, width):
         if(n_Centroids_B[i] == 0):
             n_Centroids_B[i] = n_Centroids_B[i] + 1
             
-        Centroids_R[i] = Centroids_R[i]/n_Centroids_R[i]
-        Centroids_G[i] = Centroids_G[i]/n_Centroids_G[i]
-        Centroids_B[i] = Centroids_B[i]/n_Centroids_B[i]
-    
+        
+        Centroids_R[i] = float(Centroids_R[i]/n_Centroids_R[i])
+        Centroids_G[i] = float(Centroids_G[i]/n_Centroids_G[i])
+        Centroids_B[i] = float(Centroids_B[i]/n_Centroids_B[i])
+        
     return Centroids_R,Centroids_G, Centroids_B
 
-@jit
 def SegmentationImage(image, k):
     '''
     Partitioned image into various subgroups (of pixels) 
@@ -117,35 +127,44 @@ def SegmentationImage(image, k):
         Returns:
         Export output to image or video
     '''
-    height, width, channels = img.shape
+    timing = 0
+    height, width, channels = image.shape
     
     # Choose ramdom centroids
     Centroids_R, Centroids_G, Centroids_B = Random_Centroids(k, image, width, height)
     
     #First Centroids
-    Centroids = [[1, 2, 3]] * k
+    Centroids = np.array([[1, 2, 3]] * k, np.int64)
     
     for i in range(k):
         Centroids[i] = [Centroids_R[i], Centroids_G[i], Centroids_B[i]]
         
     #Create map to save centroid indexs
     Map_Centroids = Mat_3D(k, width, height)
-    Index_Map = Mat_3D(k, width, height)
+    Index_Map = Mat_3D(1, width, height)
     
     #KMeans
-    for i in range(5):
-        for row in range(height):
-            for col in range(width):
-                Index_Map[row][col] = Choose_Centroid(row, col, image, Centroids)
-                Map_Centroids[row][col] = Centroids[Index_Map[row][col]]
-            
+    for i in range(10):
+        start_time = time.time()
+        Choose_Centroid(Index_Map, Map_Centroids, image, Centroids)
+        timing = timing + (time.time() - start_time)
+        
         #Rechoose Centroids
-        Centroids_R,Centroids_G, Centroids_B  = ReChoose_Centroid(Index_Map, image, k, Centroids, height, width)
+        Centroids_R,Centroids_G, Centroids_B  = ReChoose_Centroid(Index_Map, image, k, Centroids)
+        
         
         for i in range(k):
             Centroids[i] = [Centroids_R[i], Centroids_G[i], Centroids_B[i]]
-        
-    return np.array(Map_Centroids)
+    print("--- %s seconds ---" % timing)    
+    return Map_Centroids
+
+start_time = time.time()
+
+img = cv2.imread('image.jpg')
+out_img = SegmentationImage(img,3)
+cv2.imwrite('kmeans_seq.jpg', out_img)
+
+print("--- %s seconds ---" % (time.time() - start_time))
 
 def main():
     parser.add_argument('filename', help="File Image Input")
