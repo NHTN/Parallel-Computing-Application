@@ -9,7 +9,7 @@ Ho Chi Minh University Of Science.
 Faculty of Information Technology.
 # 
 
-**Đồ Án Môn Học**: Lập trình song song dứng dụng
+**Đồ Án Môn Học**: Lập trình song song ứng dụng
 
 **Đề tài**: Song song và tối ưu hoá thuật toán k-means để phân vùng đối tượng trên video.
 
@@ -184,19 +184,25 @@ Faculty of Information Technology.
   </tr>
 
   <tr>
-   <td rowspan="4">8</td>
+   <td rowspan="5">8</td>
     <td>28/05/2021</td>
     <td>31/05/2021</td>
     <td>
     - Cập nhật numba trên thuật toán tuần tự
-   <br>
-    - Tìm hiểu phương pháp áp dụng K-means trên video
-   <br>
-    - Cập nhật hàm đánh giá thuật toán bằng thư viện Sklearn
    </td>
-    <td>Cả nhóm</td>
+    <td>Nguyễn Lê Trường Thành</td>
   </tr>
 
+ <tr>
+    <td>01/06/2021</td>
+    <td>01/06/2021</td>
+    <td>
+    - Tìm hiểu phương pháp áp dụng K-means trên video
+   <br>
+    - Cập nhật hàm đánh giá thuật toán bằng thư viện OpenCV
+   </td>
+    <td>Nguyễn Huỳnh Thảo Nhi</td>
+  </tr>
 
   <tr>
     <td>01/06/2021</td>
@@ -213,7 +219,7 @@ Faculty of Information Technology.
     <td>
     - Cải thiện thuật toán tuần tự
     <br>
-    - Tối ưu code
+    - Cài đặt song song cho hàm chọn tâm của k-means
    </td>
     <td>Cả nhóm</td>
   </tr>
@@ -226,7 +232,6 @@ Faculty of Information Technology.
    </td>
     <td>Cả nhóm</td>
   </tr>
-
 
   <tr>
    <td>9</td>
