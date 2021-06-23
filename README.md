@@ -240,5 +240,34 @@ Faculty of Information Technology.
     <td>Báo cáo tiến độ lần 04</td>
     <td>Nguyễn Huỳnh Thảo Nhi</td>
   </tr>
+
+  <tr>
+   <td rowspan="3">10</td>
+    <td>11/06/2021</td>
+    <td>23/06/2021</td>
+    <td>
+    - Tìm hiểu phương pháp tối ưu code song song trên video trên phiên bản hiện tại
+    - Tìm hiểu và cài đặt phương pháp song song hoá các frames ảnh
+    - Tìm hiểu phương pháp tối ưu elbow
+   </td>
+    <td>Cả nhóm</td>
+  </tr>
+
+
+  <tr>
+    <td>23/06/2021</td>
+    <td>23/06/2021</td>
+    <td>
+    - Thảo luận, tổng hợp code và merge code
+   </td>
+    <td>Cả nhóm</td>
+  </tr>
+
+  <tr>
+    <td>24/06/2021</td>
+    <td>24/06/2021</td>
+    <td>Báo cáo tiến độ lần 05</td>
+    <td>Nguyễn Lê Trường Thành</td>
+  </tr>
 </tbody>
 </table>
