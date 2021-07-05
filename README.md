@@ -269,5 +269,62 @@ Faculty of Information Technology.
     <td>Báo cáo tiến độ lần 05</td>
     <td>Nguyễn Lê Trường Thành</td>
   </tr>
+
+  <tr>
+   <td rowspan="3">11</td>
+    <td>25/06/2021</td>
+    <td>30/06/2021</td>
+    <td>
+    - Tìm hiểu phương pháp tối ưu cài đặt elbow trên video.
+    - Tìm hiểu phương pháp so sánh các frame ảnh.
+   </td>
+    <td>Cả nhóm</td>
+  </tr>
+
+
+  <tr>
+    <td>01/07/2021</td>
+    <td>07/07/2021</td>
+    <td>
+    - Cài đặt thuật toán so sánh các frame ảnh.
+   </td>
+    <td>Lê Bá Quyền</td>
+  </tr>
+
+  <tr>
+    <td>01/07/2021</td>
+    <td>07/07/2021</td>
+    <td>
+    - Cài đặt phương pháp tối ưu elbow trên video.
+   </td>
+    <td>Nguyễn Lê Trường Thành
+    </br> Nguyễn Huỳnh Thảo Nhi</td>
+  </tr>
+
+  <tr>
+    <td rowspan="3">12</td>
+    <td>08/07/2021</td>
+    <td>08/07/2021</td>
+    <td>
+    - Thảo luận, tổng hợp code và merge code
+   </td>
+    <td>Cả nhóm</td>
+  </tr>
+
+  <tr>
+    <td>09/07/2021</td>
+    <td>09/07/2021</td>
+    <td>
+    - Kiểm tra, hoàn thiện và bổ sung thiếu sót đồ án.
+   </td>
+    <td>Cả nhóm</td>
+  </tr>
+
+  <tr>
+    <td>10/07/2021</td>
+    <td>10/07/2021</td>
+    <td>Báo cáo cuối kỳ</td>
+    <td>Cả nhóm</td>
+  </tr>
 </tbody>
 </table>
