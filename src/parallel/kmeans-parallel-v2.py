@@ -234,7 +234,7 @@ def Merge_Frames_To_Video(file_output, fps=13):
     img_array = []
     height = 0
     width = 0
-    images = glob.glob("*.jpg")
+    images = sorted(glob.glob("*.jpg"))
     for filename in images:
         if ('output' in filename):
             img = cv2.imread(filename)
