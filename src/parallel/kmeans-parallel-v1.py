@@ -187,7 +187,7 @@ def Resize_Image(orginal_image):
     
 def Find_Elbow():
     list_frame = []
-    frame = glob.glob('*.jpg')
+    frame = sorted(glob.glob('*.jpg'))
 
     for i in frame:
         if('frame' in i):
@@ -253,7 +253,7 @@ def main():
             print(temp)
             print("---- Number of Cluster: %s ------" %k)
             
-            for i in glob.glob('*.jpg'):
+            for i in sorted(glob.glob('*.jpg')):
                 if('frame' in i):
                     cv2.imwrite(i.replace('frame','output'),SegmentationImage(cv2.imread(i), k))
                     print("------Complete {}------".format(count))
@@ -263,7 +263,7 @@ def main():
                         print("---- Number of Cluster: %s ------" %k)
         else:
             k = int(args.k)
-            for i in glob.glob('*.jpg'):
+            for i in sorted(glob.glob('*.jpg')):
                 if('frame' in i):
                     cv2.imwrite(i.replace('frame','output'),SegmentationImage(cv2.imread(i), k))
                     print("------Complete {}------".format(count))
