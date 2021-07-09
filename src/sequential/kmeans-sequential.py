@@ -4,29 +4,16 @@ from random import *
 import numpy as np
 import math
 import glob
-from numba import jit, prange
+from numba import jit
 import time
 import warnings
 warnings.filterwarnings('ignore')
 import matplotlib.pyplot as plt
-from numba.typed import List
 from argparse import ArgumentParser
 parser = ArgumentParser()
 
 @jit(nopython=True)
 def Random_Centroids(k, image, height, width):
-    '''
-    Random initialize for k clusters
-
-    Args:
-      input_pixels (int[[]]): The array of pixels of image.
-      k (int): Integer value of k clusters.
-      height (int): Height of input image.
-      width (int): Width of input image.
-
-    Returns:
-      int[[][][]]: The vector clusters is initialized.
-    '''
     Centroids_R,Centroids_G, Centroids_B = np.array([1] * k), np.array([1] * k), np.array([1] * k)
     
     for i in range(k):
@@ -42,18 +29,7 @@ def Mat_3D(k, height, width):
 
 @jit(nopython=True)
 def Choose_Centroid(Index_Map, Map_Centroids, image, Centroids):
-    '''
-    Choose the index of pixel which have the minimum distance with centroids 
-
-    Args:
-      input_pixels (int[[]]): The array of pixels of image.
-      k (int): Integer value of k clusters.
-      height (int): Height of input image.
-      width (int): Width of input image.
-
-    Returns:
-      int[[][][]]: The vector clusters is initialized.
-    '''
+    
     for row in range(image.shape[0]):
         for col in range(image.shape[1]):
             pixel = image[row][col]
@@ -73,20 +49,7 @@ def Choose_Centroid(Index_Map, Map_Centroids, image, Centroids):
 
 @jit(nopython=True)
 def ReChoose_Centroid(index_map, image, k, centroids):
-    '''
-    Re choose the centroids which suitable
-
-    Args:
-      index_map (int[[]]): The array of pixels of image.
-      image (int[][]): Input array 
-      k (int): Integer value of k clusters.
-      height (int): Height of input image.
-      width (int): Width of input image.
-
-    Returns:
-      int[[][][]]: The vector of centroids.
-    '''
-
+    
     Centroids_R,Centroids_G, Centroids_B = np.array([1] * k), np.array([1] * k), np.array([1] * k)
     n_Centroids_R, n_Centroids_G, n_Centroids_B = np.array([1] * k), np.array([1] * k), np.array([1] * k)
     
@@ -117,17 +80,9 @@ def ReChoose_Centroid(index_map, image, k, centroids):
     return Centroids_R,Centroids_G, Centroids_B
 
 def SegmentationImage(image, k):
-    '''
-    Partitioned image into various subgroups (of pixels) 
-
-        Args:
-        image (int[][]): Input array 
-        k (int): Integer value of k clusters
-
-        Returns:
-        Export output to image or video
-    '''
-    timing = 0
+    
+    timing_choose = 0
+    timing_rechoose = 0
     height, width, channels = image.shape
     
     # Choose ramdom centroids
@@ -140,147 +95,189 @@ def SegmentationImage(image, k):
         Centroids[i] = [Centroids_R[i], Centroids_G[i], Centroids_B[i]]
         
     #Create map to save centroid indexs
-    Map_Centroids = Mat_3D(k, width, height)
+    Map_Centroids = Mat_3D(3, width, height)
     Index_Map = Mat_3D(1, width, height)
     
     #KMeans
     for i in range(10):
-        start_time = time.time()
+        
+        start_time1 = time.time()
         Choose_Centroid(Index_Map, Map_Centroids, image, Centroids)
-        timing = timing + (time.time() - start_time)
+        timing_choose = timing_choose + (time.time() - start_time1)
         
         #Rechoose Centroids
+        start_time2 = time.time()
         Centroids_R,Centroids_G, Centroids_B  = ReChoose_Centroid(Index_Map, image, k, Centroids)
-        
+        timing_rechoose = timing_rechoose + (time.time() - start_time2)
         
         for i in range(k):
             Centroids[i] = [Centroids_R[i], Centroids_G[i], Centroids_B[i]]
-    print("--- %s seconds ---" % timing)    
+    
+#     print("--- Choose Time: %s seconds ---" % timing_choose)
+#     print("--- ReChoose Time: %s seconds ---" % timing_rechoose)
     return Map_Centroids
 
-start_time = time.time()
+def Calculate_SSE(out_img, img):
+    SSE_map  = np.full((img.shape[0], img.shape[1]), 1, np.float)
+    
+    for row in range(img.shape[0]):
+        for col in range(img.shape[1]):
+            SSE_map[row][col] = math.sqrt(math.pow((float(img[row][col][0])-float(out_img[row][col][0])),2) + math.pow((float(img[row][col][1])-float(out_img[row][col][1])),2) + math.pow((float(img[row][col][2])-float(out_img[row][col][2])),2))
+    
+    return np.reshape(SSE_map, (SSE_map.shape[0]*SSE_map.shape[1], 1)).sum()
 
-img = cv2.imread('image.jpg')
-out_img = SegmentationImage(img,3)
-cv2.imwrite('kmeans_seq.jpg', out_img)
+def ConverVideoToFrames(video_path):
+    count = 0
+    n = 1000
+    vidcap = cv2.VideoCapture(video_path)
+    success,image = vidcap.read()
+    success = True
+    while success:
+        vidcap.set(cv2.CAP_PROP_POS_MSEC,(count*75))    # added this line 
+        success,image = vidcap.read()
+        try:
+            cv2.imwrite("frame%d.jpg" % n, image)     # save frame as JPEG file
+            count = count + 1
+            n = n + 1
+        except:
+            break
+            
+def ssim(img1, img2):
+    
+    C1 = (0.01 * 255)**2
+    C2 = (0.03 * 255)**2
 
-print("--- %s seconds ---" % (time.time() - start_time))
+    img1 = img1.astype(np.float64)
+    img2 = img2.astype(np.float64)
+    kernel = cv2.getGaussianKernel(11, 1.5)
+    window = np.outer(kernel, kernel.transpose())
+
+    mu1 = cv2.filter2D(img1, -1, window)[5:-5, 5:-5]  
+    mu2 = cv2.filter2D(img2, -1, window)[5:-5, 5:-5]
+    mu1_sq = mu1**2
+    mu2_sq = mu2**2
+    mu1_mu2 = mu1 * mu2
+    sigma1_sq = cv2.filter2D(img1**2, -1, window)[5:-5, 5:-5] - mu1_sq
+    sigma2_sq = cv2.filter2D(img2**2, -1, window)[5:-5, 5:-5] - mu2_sq
+    sigma12 = cv2.filter2D(img1 * img2, -1, window)[5:-5, 5:-5] - mu1_mu2
+
+    ssim_map = ((2 * mu1_mu2 + C1) * (2 * sigma12 + C2)) / ((mu1_sq + mu2_sq + C1) *
+                                                            (sigma1_sq + sigma2_sq + C2))
+    return ssim_map.mean()
+
+def Resize_Image(orginal_image):
+
+    orginal_image = cv2.imread(orginal_image)
+    if(orginal_image.shape[1] > 500 and orginal_image.shape[0] > 300):
+        scale_percent = 500 / orginal_image.shape[1]
+        width = int(orginal_image.shape[1] * scale_percent)
+        height = int(orginal_image.shape[0] * scale_percent)
+        dim = (width, height)
+
+        # resize image
+        resized_image = cv2.resize(orginal_image, dim, interpolation = cv2.INTER_AREA)
+        return resized_image
+    else:
+        return orginal_image
+    
+def Find_Elbow():
+    list_frame = []
+    frame = glob.glob('*.jpg')
+
+    for i in frame:
+        if('frame' in i):
+            list_frame.append(Resize_Image(i))
+
+    list_elbow = []
+    for i in range(len(list_frame) - 1):
+            if(ssim(list_frame[i], list_frame[i+1]) < 0.65):
+                list_elbow.append(i+1)
+    return list_elbow
+
+def Merge_Frames_To_Video(file_output, fps=13):
+    img_array = []
+    height = 0
+    width = 0
+    images = glob.glob("*.jpg")
+    for filename in images:
+        if ('output' in filename):
+            img = cv2.imread(filename)
+            height, width, layers = img.shape
+            img_array.append(img)
+
+    fourcc = cv2.VideoWriter_fourcc(*'mp4v')
+    out = cv2.VideoWriter(file_output, fourcc, fps, (width,height))
+    for i in range(len(img_array)):
+        out.write(img_array[i])
+    out.release() 
+    
+def Calc_K(img):
+    n = 10
+    SSE = [0] * n
+
+    for i in range(n):
+
+        out_img = SegmentationImage(img,i + 1)
+        SSE[i] = Calculate_SSE(out_img, img)
+
+        if(i > 2):
+            for j in range(len(SSE) - 3):
+                if(abs(int(SSE[j] - SSE[j+1]) / int(SSE[j+1] - SSE[j+2])) < 1.4):
+                    return j + 1
+
+def Clean_Images():
+    for i in glob.glob("*.jpg"):
+        if('frame' in i or 'output' in i):
+            os.remove(i)
 
 def main():
+    
     parser.add_argument('filename', help="File Image Input")
     parser.add_argument('-k' , help="Number of Clusters")
     parser.add_argument('fileout', help="File Image Output")
-    
     args = parser.parse_args()
-    global img
-
+    start_time = time.time() 
+    
     if('.mp4' in args.filename):
+        ConverVideoToFrames(args.filename)
         count = 0
-        vidcap = cv2.VideoCapture(args.filename)
-        success,image = vidcap.read()
-        success = True
-
-        while success:
-            vidcap.set(cv2.CAP_PROP_POS_MSEC,(count*100))    # added this line 
-            success,image = vidcap.read()
-            try:
-                cv2.imwrite("frame%d.jpg" % count, image)     # save frame as JPEG file
-                count = count + 1
-            except:
-                break
         
-    if(args.k == 'elbow'):
-        n = 10
-        SSE = [0] * n 
-
-        print('--- Calculating Elbow Method ----')  
-        temp = []
-        
-        if('.jpg' in args.filename):
+        if(args.k == 'elbow'):
             
-            for i in range(n):
-                print('--- Calculating SSE with k = {} ----'.format(i+1)) 
-                SSE[i] = 0
-                img = cv2.imread(args.filename)
-                out_img = SegmentationImage(img,i + 1)
-                img = cv2.imread(args.filename)
-
-                for x in range(len(img)):
-                    for y in range(len(img[0])):
-                        SSE[i] = SSE[i] + math.sqrt(math.pow((int(img[x][y][0])-int(out_img[x][y][0])),2) + math.pow((int(img[x][y][1])-int(out_img[x][y][1])),2) + math.pow((int(img[x][y][2])-int(out_img[x][y][2])),2))
-
-            for i in range(len(SSE) - 3):
-                temp.append(abs(int(SSE[i] - SSE[i+1]) - int(SSE[i+1] - SSE[i+2]) - int(SSE[i+2] - SSE[i+3])))
-            k = temp.index(min(temp)) + 1
+            k = Calc_K(Resize_Image('frame1000.jpg'))
+            temp = Find_Elbow()
+            print(temp)
+            print("---- Number of Cluster: %s ------" %k)
             
-        if('.mp4' in args.filename):
+            for i in glob.glob('*.jpg'):
+                if('frame' in i):
+                    cv2.imwrite(i.replace('frame','output'),SegmentationImage(cv2.imread(i), k))
+                    print("------Complete {}------".format(count))
+                    count = count + 1
+                    if (count in temp):
+                        k = Calc_K(Resize_Image('frame1000.jpg'))
+                        print("---- Number of Cluster: %s ------" %k)
+        else:
+            k = int(args.k)
+            for i in glob.glob('*.jpg'):
+                if('frame' in i):
+                    cv2.imwrite(i.replace('frame','output'),SegmentationImage(cv2.imread(i), k))
+                    print("------Complete {}------".format(count))
+                    count = count + 1
+                    
+        Merge_Frames_To_Video(args.fileout)
+        Clean_Images()
+        
+    if('.jpg' in args.filename): 
+        
+        if(args.k == 'elbow'):
+            k = Calc_K(Resize_Image(args.filename))
+            print("---- Number of Cluster: %s ------" %k)
+        else:  
+            k = int(args.k)
             
-            for i in range(n):
-                print('--- Calculating SSE with k = {} ----'.format(i+1)) 
-                SSE[i] = 0
-                img = cv2.imread('frame0.jpg')
-                out_img = SegmentationImage(img,i + 1)
-                img = cv2.imread('frame0.jpg')
-                
-                for x in range(len(img)):
-                    for y in range(len(img[0])):
-                        SSE[i] = SSE[i] + math.sqrt(math.pow((int(img[x][y][0])-int(out_img[x][y][0])),2) + math.pow((int(img[x][y][1])-int(out_img[x][y][1])),2) + math.pow((int(img[x][y][2])-int(out_img[x][y][2])),2))
-
-            for i in range(len(SSE) - 3):
-                temp.append(abs(int(SSE[i] - SSE[i+1]) - int(SSE[i+1] - SSE[i+2]) - int(SSE[i+2] - SSE[i+3])))
-            k = temp.index(min(temp)) + 1
-    
-    else:
-        k = int(args.k)
-            
-    print("--- Number of Cluster: {} ----".format(k))
-    
-    if('.jpg' in args.filename):
-        
-        print("--- Coverting the image ---")
-        start_time = time.time()
-        img = cv2.imread(args.filename)
-        out_img = SegmentationImage(img, k)
-        cv2.imwrite(args.fileout, out_img)
-
-        print("--- %s seconds ---" % (time.time() - start_time))
-        
-    if('.mp4' in args.filename):
-        
-        start_time = time.time()
-        print("---- Start Coverting ----")
-        count = 1
-        images = glob.glob("*.jpg")
-        for i in images:
-            if("frame" in i):
-                print("Coverting {}/{}".format(count, len(images)))
-                img = cv2.imread(i)
-                out_img = SegmentationImage(img, k)
-                cv2.imwrite(i.replace('frame',args.fileout), out_img)
-                count = count + 1
-
-        print("--- Done in %s seconds ---" % (time.time() - start_time))
-        
-        
-        img_array = []
-        height = 0
-        width = 0
-        images = glob.glob("*.jpg")
-        for filename in images:
-            if (args.fileout in filename):
-                img = cv2.imread(filename)
-                height, width, layers = img.shape
-                img_array.append(img)
-
-        fourcc = cv2.VideoWriter_fourcc(*'MPEG')
-        out = cv2.VideoWriter('output.avi',fourcc, 10, (width,height))
-        
-        for i in range(len(img_array)):
-            out.write(img_array[i])
-        out.release()    
-        
-        for i in glob.glob("*.jpg"):
-            os.remove(i)
+        cv2.imwrite(args.fileout,SegmentationImage(cv2.imread(args.filename), k))
+    print("--- %s seconds ---" % (time.time() - start_time))
 
 if __name__ == "__main__":
     main()
