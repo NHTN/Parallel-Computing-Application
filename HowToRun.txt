@@ -1,0 +1,55 @@
+ĐỒ ÁN MÔN HỌC: LẬP TRÌNH SONG SONG ỨNG DỤNG
+
+ĐỀ TÀI: SONG SONG HOÁ VÀ TỐI ƯU THUẬT TOÁN K-MEANS ĐỂ PHÂN VÙNG ĐỐI TƯỢNG TRÊN VIDEO
+
+Github: https://github.com/NHTN/Parallel-Computing-Application
+
+HƯỚNG DẪN CHẠY FILE ‘Report.ipynb’
+
+I. CHUẨN BỊ:
+   1. File:
+      - File Report.ipynb
+      - File kmeans-parallel-v1.py
+      - File kmeans-parallel-v2.py
+      - File kmeans-sequential.py
+      - Ảnh định dạng jpg (optional)
+      - Video định dạng mp4 (optional)
+   2. Môi trường:
+      - Google Colab
+
+
+II. CÁC BƯỚC CÀI ĐẶT:
+	1. Mở file Report.ipynb bằng Google Colab.
+	2. Upload các file đã chuẩn bị ở mục I lên tab Google CoLab đang chạy Report.ipynb
+	3. Cài đặt Runtime -> Change runtime type -> Hardware accelerator -> GPU
+	4. Runtime -> Restart and run all để thực thi file notebook.
+
+III. FILE CODE CÀI ĐẶT SONG SONG VÀ TUẦN TỰ:
+	1. Các file code của chương trình:
+		a. Code tuần tự: kmeans-sequential.py
+		b. Code song song version 1: kmeans-parallel-v1.py
+		c. Code song song version 2: kmeans-parallel-v2.py
+
+	2. Tham số đầu vào 
+		a. Tên của ảnh/video input có cả định dạng
+		b. -k hệ số cụm k hoặc elbow để tự tính số k
+		c. Tên của ảnh/video output có cả định dạng
+	
+	Ví dụ:  !python Segmentation_Image_Kmean_Sequential.py test.jpg -k 3 output_seq.jpg
+	!python Segmentation_Image_Kmean_Sequential.py demo.mp4 -k elbow ouput.mp4
+	!python Segmentation_Image_Kmean_Parrallel.py demo.mp4 -k elbow ouput.mp4
+
+IV. CÁC FILEs CODE THUẬT TOÁN HỖ TRỢ:
+   1. Thuật toán Elbow:
+      - Elbow.py và Elbow_Parallel.py
+      + Tham số đầu vào 
+         1. Tên của ảnh có cả định dạng
+      Ví dụ:  !python Elbow_Parallel.py test.jpg
+         !python Elbow.py test.jpg
+
+   2. Thuật toán SSIM:
+      - SSIM.py
+      + Tham số đầu vào 
+         1. Tên của ảnh thứ nhất bao gồm định dạng
+         2. Tên của ảnh thứ hai bao gồm định dạng
+      Ví dụ:	!python SSIM.py opencv.jpg output_seq.jpg
