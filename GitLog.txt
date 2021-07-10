@@ -1,42 +1,44 @@
-* 097f49d, NHTNhi, 50 seconds ago, fĩ: correct run time  in notebook
-* a2d15ed, NHTNhi, 71 minutes ago, refactor: clean code
-* 02288f8, NHTNhi, 7 hours ago, feat: update file HowToRun.txt
-* 04cedbe, NHTNhi, 8 hours ago, feat: add evaluate for group members in rport
-* b5c1858, NHTNhi, 10 hours ago, refactor: update video demo for report notebook
-*   68ee6f8, NHTNhi, 10 hours ago, Merge branch 'feature/k-means-cpu-NLTThanh' of https://github.com/NHTN/Parallel-Computing-Application into feature/k-means-cpu-NLTThanh
+* 9682ee8, LBQuyen, 2 minutes ago, ! update information detail for SSIM
+* 4748db2, NHTNhi, 41 minutes ago, feat: update gitlog
+* 097f49d, NHTNhi, 42 minutes ago, fĩ: correct run time  in notebook
+* a2d15ed, NHTNhi, 2 hours ago, refactor: clean code
+* 02288f8, NHTNhi, 8 hours ago, feat: update file HowToRun.txt
+* 04cedbe, NHTNhi, 9 hours ago, feat: add evaluate for group members in rport
+* b5c1858, NHTNhi, 11 hours ago, refactor: update video demo for report notebook
+*   68ee6f8, NHTNhi, 11 hours ago, Merge branch 'feature/k-means-cpu-NLTThanh' of https://github.com/NHTN/Parallel-Computing-Application into feature/k-means-cpu-NLTThanh
 |\  
-| * f7ec54a, nltthanh, 10 hours ago, Fix 4
-* |   1acf56b, NHTNhi, 10 hours ago, Merge branch 'main' of https://github.com/NHTN/Parallel-Computing-Application into feature/k-means-cpu-NLTThanh
+| * f7ec54a, nltthanh, 11 hours ago, Fix 4
+* |   1acf56b, NHTNhi, 11 hours ago, Merge branch 'main' of https://github.com/NHTN/Parallel-Computing-Application into feature/k-means-cpu-NLTThanh
 |\ \  
 | * | 0c77db1, NHTNhi, 22 hours ago, feat: update repositoy in report notebook
 | * | ac2b7e6, NHTNhi, 23 hours ago, feat: update GitLog.txt
 | * | 7c39e58, NHTNhi, 23 hours ago, refactor: sort files and folders
-| * | 4b3ba86, NHTNhi, 23 hours ago, feat: add file gitlog
+| * | 4b3ba86, NHTNhi, 24 hours ago, feat: add file gitlog
 | * |   9d9b415, NHTNhi, 24 hours ago, Merge branch 'main' of https://github.com/NHTN/Parallel-Computing-Application into feature/k-means-gpu-LBQuyen
 | |\ \  
 | | * \   85c84bf, NHTNhi, 24 hours ago, Merge branch 'feature/k-means-cpu-NLTThanh' of https://github.com/NHTN/Parallel-Computing-Application into main
 | | |\ \  
 | | | |/  
-| | | * fc21e39, nltthanh, 24 hours ago, Fix 3
-| | * | 1687bb6, NHTNhi, 24 hours ago, feat: optimize elbow on video by using scale image
-| | * |   1be6783, NHTNhi, 30 hours ago, Merge branch 'main' of https://github.com/NHTN/Parallel-Computing-Application into feature/k-means-gpu-NHTNhi
+| | | * fc21e39, nltthanh, 25 hours ago, Fix 3
+| | * | 1687bb6, NHTNhi, 25 hours ago, feat: optimize elbow on video by using scale image
+| | * |   1be6783, NHTNhi, 31 hours ago, Merge branch 'main' of https://github.com/NHTN/Parallel-Computing-Application into feature/k-means-gpu-NHTNhi
 | | |\ \  
-| | | * \   b457935, NHTNhi, 30 hours ago, Merge branch 'feature/k-means-cpu-NLTThanh' of https://github.com/NHTN/Parallel-Computing-Application into main
+| | | * \   b457935, NHTNhi, 31 hours ago, Merge branch 'feature/k-means-cpu-NLTThanh' of https://github.com/NHTN/Parallel-Computing-Application into main
 | | | |\ \  
 | | * | | | e1cf546, NHTNhi, 4 days ago, feat: optimize elbow by using resize frames when segmentation on video
-| * | | | | 69dd3a4, LBQuyen, 3 days ago, Merge branch 'feature/k-means-gpu-LBQuyen' of https://github.com/NHTN/Parallel-Computing-Application into feature/k-means-gpu-LBQuyen
+| * | | | | 69dd3a4, LBQuyen, 4 days ago, Merge branch 'feature/k-means-gpu-LBQuyen' of https://github.com/NHTN/Parallel-Computing-Application into feature/k-means-gpu-LBQuyen
 | * | | | | 5053ef2, LBQuyen, 4 days ago, + Add function to caculate SSIM
 | |/ / / /  
-* | | | | f695af2, NHTNhi, 24 hours ago, fix: remove unuse file
-* | | | |   26e2a2a, NHTNhi, 24 hours ago, Merge branch 'feature/k-means-cpu-NLTThanh' of https://github.com/NHTN/Parallel-Computing-Application into feature/k-means-cpu-NLTThanh
+* | | | | f695af2, NHTNhi, 25 hours ago, fix: remove unuse file
+* | | | |   26e2a2a, NHTNhi, 25 hours ago, Merge branch 'feature/k-means-cpu-NLTThanh' of https://github.com/NHTN/Parallel-Computing-Application into feature/k-means-cpu-NLTThanh
 |\ \ \ \ \  
 | | |_|_|/  
 | |/| | |   
 | * | | | af6f91e, nltthanh, 25 hours ago, Report Fix 2
-| * | | | 00506f5, nltthanh, 25 hours ago, Report Fix 1
+| * | | | 00506f5, nltthanh, 26 hours ago, Report Fix 1
 | | |_|/  
 | |/| |   
-* | | |   3f08eed, NHTNhi, 30 hours ago, Merge branch 'main' of https://github.com/NHTN/Parallel-Computing-Application into feature/k-means-cpu-NLTThanh
+* | | |   3f08eed, NHTNhi, 31 hours ago, Merge branch 'main' of https://github.com/NHTN/Parallel-Computing-Application into feature/k-means-cpu-NLTThanh
 |\ \ \ \  
 | |/ / /  
 |/| | /   
@@ -105,7 +107,7 @@
 * | | | | | 36070bf, nltthanh, 4 weeks ago, Fix
 * | | | | | dd50d0e, nltthanh, 4 weeks ago, Fix
 |/ / / / /  
-* | | | |   f2212d2, nltthanh, 4 weeks ago, Merge branch 'feature/k-means-cpu-NLTThanh' of https://github.com/NHTN/Parallel-Computing-Application into feature/k-means-cpu-NLTThanh
+* | | | |   f2212d2, nltthanh, 5 weeks ago, Merge branch 'feature/k-means-cpu-NLTThanh' of https://github.com/NHTN/Parallel-Computing-Application into feature/k-means-cpu-NLTThanh
 |\ \ \ \ \  
 | | |_|_|/  
 | |/| | |   
@@ -137,7 +139,7 @@
 | * | | 9d5a493, NHTNhi, 9 weeks ago, feat: update file readme
 | * | | 2d4fe24, NHTNhi, 2 months ago, feat: add report
 | * | | 4d79625, NHTNhi, 2 months ago, init: initialize report
-* | | | b54288a, nltthanh, 4 weeks ago, Fix
+* | | | b54288a, nltthanh, 5 weeks ago, Fix
 | |/ /  
 |/| |   
 * | | 6be247a, nltthanh, 8 weeks ago, Your Message
